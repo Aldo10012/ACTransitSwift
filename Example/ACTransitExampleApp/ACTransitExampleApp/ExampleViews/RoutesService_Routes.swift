@@ -15,7 +15,7 @@ struct RoutesService_Routes: View {
             Section("Parameters") {
                 HStack {
                     TextField("booking (e.g. Current)", text: $booking)
-                    optionalBadge
+                    FieldBadge(requirement: .optional)
                 }
                 HStack {
                     Picker("sortType", selection: $sortType) {
@@ -23,18 +23,12 @@ struct RoutesService_Routes: View {
                         Text("Alphabetical").tag(RouteSortType?.some(.alphabetical))
                         Text("Natural").tag(RouteSortType?.some(.natural))
                     }
-                    optionalBadge
+                    FieldBadge(requirement: .optional)
                 }
             }
 
-            Section {
-                Button("Search") {
-                    Task { await fetchRoutes() }
-                }
-                .frame(maxWidth: .infinity)
-                .foregroundStyle(.white)
-                .disabled(isLoading)
-                .listRowBackground(isLoading ? Color.accentColor.opacity(0.5) : Color.accentColor)
+            SearchButton(isLoading: isLoading) {
+                await fetchRoutes()
             }
 
             if isLoading {
@@ -69,15 +63,6 @@ struct RoutesService_Routes: View {
             }
         }
         .navigationTitle("RoutesService.routes")
-    }
-
-    private var optionalBadge: some View {
-        Text("optional")
-            .font(.caption2)
-            .foregroundStyle(.secondary)
-            .padding(.horizontal, 6)
-            .padding(.vertical, 2)
-            .background(.quaternary, in: Capsule())
     }
 
     private func fetchRoutes() async {
