@@ -9,7 +9,7 @@ struct ContentView: View {
                 Section {
                     cell(title: "routes") { RoutesService_Routes() }
                 } header: {
-                    Text("Routes")
+                    Text("RoutesService")
                 }
             }
         }
