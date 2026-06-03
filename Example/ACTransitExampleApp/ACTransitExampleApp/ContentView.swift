@@ -8,6 +8,7 @@ struct ContentView: View {
             Form {
                 Section {
                     cell(title: "routes") { RoutesService_Routes() }
+                    cell(title: "route") { RoutesService_Route() }
                 } header: {
                     Text("RoutesService")
                 }
