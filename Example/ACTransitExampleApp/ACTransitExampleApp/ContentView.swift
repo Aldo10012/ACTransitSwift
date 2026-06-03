@@ -1,21 +1,27 @@
-//
-//  ContentView.swift
-//  ACTransitExampleApp
-//
-//  Created by Alberto Dominguez on 5/29/26.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    @State var path = [NavigationPath]()
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            Form {
+                Section {
+                    cell(title: "routes") { RoutesService_Routes() }
+                } header: {
+                    Text("Routes")
+                }
+            }
         }
-        .padding()
+    }
+
+    @ViewBuilder
+    private func cell<Destination: View>(title: String, @ViewBuilder destination: () -> Destination) -> some View {
+        NavigationLink {
+            destination()
+        } label: {
+            Text(title)
+        }
     }
 }
 
