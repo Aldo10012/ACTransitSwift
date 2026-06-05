@@ -10,6 +10,7 @@ struct ContentView: View {
                     cell(title: "routes") { RoutesService_Routes() }
                     cell(title: "route") { RoutesService_Route() }
                     cell(title: "trips") { RoutesService_Trips() }
+                    cell(title: "tripsInstructions") { RoutesService_TripsInstructions() }
                 } header: {
                     Text("RoutesService")
                 }
