@@ -16,6 +16,7 @@ struct ContentView: View {
                     cell(title: "pattern") { RoutesService_Pattern() }
                     cell(title: "tripStops") { RoutesService_TripStops() }
                     cell(title: "vehicles") { RoutesService_Vehicles() }
+                    cell(title: "tripEstimate") { RoutesService_TripEstimate() }
                 } header: {
                     Text("RoutesService")
                 }
