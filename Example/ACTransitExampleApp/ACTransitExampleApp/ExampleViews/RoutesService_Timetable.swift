@@ -1,6 +1,6 @@
-import SwiftUI
-import MapKit
 import ACTransitSwift
+import MapKit
+import SwiftUI
 
 struct RoutesService_Timetable: View {
     @State private var routes: String = ""

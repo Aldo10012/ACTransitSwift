@@ -1,10 +1,10 @@
-import SwiftUI
 import ACTransitSwift
+import SwiftUI
 
 struct RoutesService_Exceptions: View {
     @State private var routes: String = ""
     @State private var booking: String = ""
-    @State private var result: RouteExceptions? = nil
+    @State private var result: RouteExceptions?
     @State private var isLoading = false
     @State private var errorMessage: String?
 

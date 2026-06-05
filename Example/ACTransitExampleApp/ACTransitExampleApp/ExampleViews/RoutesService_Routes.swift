@@ -1,9 +1,9 @@
-import SwiftUI
 import ACTransitSwift
+import SwiftUI
 
 struct RoutesService_Routes: View {
     @State private var booking: String = ""
-    @State private var sortType: RouteSortType? = nil
+    @State private var sortType: RouteSortType?
     @State private var results: [RouteDivision] = []
     @State private var isLoading = false
     @State private var errorMessage: String?

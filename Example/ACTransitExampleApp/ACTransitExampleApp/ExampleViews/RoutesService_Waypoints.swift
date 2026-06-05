@@ -1,11 +1,11 @@
-import SwiftUI
-import MapKit
 import ACTransitSwift
+import MapKit
+import SwiftUI
 
 struct RoutesService_Waypoints: View {
     @State private var routes: String = ""
     @State private var booking: String = ""
-    @State private var scheduleType: TripScheduleType? = nil
+    @State private var scheduleType: TripScheduleType?
     @State private var results: [RouteWaypoints] = []
     @State private var isLoading = false
     @State private var errorMessage: String?

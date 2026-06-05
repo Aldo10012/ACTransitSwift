@@ -1,10 +1,10 @@
-import SwiftUI
 import ACTransitSwift
+import SwiftUI
 
 struct RoutesService_Trips: View {
     @State private var routeName: String = ""
     @State private var direction: String = ""
-    @State private var scheduleType: TripScheduleType? = nil
+    @State private var scheduleType: TripScheduleType?
     @State private var results: [Trip] = []
     @State private var isLoading = false
     @State private var errorMessage: String?

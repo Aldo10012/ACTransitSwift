@@ -1,6 +1,6 @@
-import SwiftUI
-import MapKit
 import ACTransitSwift
+import MapKit
+import SwiftUI
 
 struct RoutesService_Schedule: View {
     @State private var routes: String = ""
@@ -10,7 +10,7 @@ struct RoutesService_Schedule: View {
     @State private var dayCode: String = ""
     @State private var hasAllStops: Bool = false
     @State private var stopId: String = ""
-    @State private var result: TripScheduleInfo? = nil
+    @State private var result: TripScheduleInfo?
     @State private var isLoading = false
     @State private var errorMessage: String?
     @State private var position: MapCameraPosition = .region(

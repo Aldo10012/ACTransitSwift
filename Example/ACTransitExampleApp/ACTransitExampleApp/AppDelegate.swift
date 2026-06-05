@@ -1,5 +1,5 @@
-import UIKit
 import ACTransitSwift
+import UIKit
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(

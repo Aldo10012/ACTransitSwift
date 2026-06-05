@@ -1,10 +1,10 @@
-import SwiftUI
 import ACTransitSwift
+import SwiftUI
 
 struct RoutesService_Route: View {
     @State private var routeName: String = ""
     @State private var booking: String = ""
-    @State private var result: Route? = nil
+    @State private var result: Route?
     @State private var isLoading = false
     @State private var errorMessage: String?
 

@@ -1,10 +1,10 @@
-import SwiftUI
 import ACTransitSwift
+import SwiftUI
 
 struct RoutesService_WaypointsFast: View {
     @State private var routes: String = ""
     @State private var booking: String = ""
-    @State private var scheduleType: TripScheduleType? = nil
+    @State private var scheduleType: TripScheduleType?
     @State private var results: [RouteWaypointsFast] = []
     @State private var isLoading = false
     @State private var errorMessage: String?

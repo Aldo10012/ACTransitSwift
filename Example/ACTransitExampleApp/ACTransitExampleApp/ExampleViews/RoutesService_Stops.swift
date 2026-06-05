@@ -1,13 +1,13 @@
-import SwiftUI
-import MapKit
 import ACTransitSwift
+import MapKit
+import SwiftUI
 
 struct RoutesService_Stops: View {
     @State private var routeName: String = ""
     @State private var booking: String = ""
     @State private var direction: String = ""
     @State private var destination: String = ""
-    @State private var scheduleType: TripScheduleType? = nil
+    @State private var scheduleType: TripScheduleType?
     @State private var byPattern: Bool = false
     @State private var results: [RouteStopOrder] = []
     @State private var isLoading = false
