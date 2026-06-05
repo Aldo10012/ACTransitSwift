@@ -9,6 +9,23 @@ struct ContentView: View {
                 Section {
                     cell(title: "routes") { RoutesService_Routes() }
                     cell(title: "route") { RoutesService_Route() }
+                    cell(title: "trips") { RoutesService_Trips() }
+                    cell(title: "tripsInstructions") { RoutesService_TripsInstructions() }
+                    cell(title: "directions") { RoutesService_Directions() }
+                    cell(title: "stops") { RoutesService_Stops() }
+                    cell(title: "pattern") { RoutesService_Pattern() }
+                    cell(title: "tripStops") { RoutesService_TripStops() }
+                    cell(title: "vehicles") { RoutesService_Vehicles() }
+                    cell(title: "tripEstimate") { RoutesService_TripEstimate() }
+                    cell(title: "waypoints") { RoutesService_Waypoints() }
+                    cell(title: "waypointsFast") { RoutesService_WaypointsFast() }
+                    cell(title: "tripsToday") { RoutesService_TripsToday() }
+                    cell(title: "tripStopsToday") { RoutesService_TripStopsToday() }
+                    cell(title: "timetable") { RoutesService_Timetable() }
+                    cell(title: "schedule") { RoutesService_Schedule() }
+                    cell(title: "destinations") { RoutesService_Destinations() }
+                    cell(title: "exceptions") { RoutesService_Exceptions() }
+                    cell(title: "profile") { RoutesService_Profile() }
                 } header: {
                     Text("RoutesService")
                 }

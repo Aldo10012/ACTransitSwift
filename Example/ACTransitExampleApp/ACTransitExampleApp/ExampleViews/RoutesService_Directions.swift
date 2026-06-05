@@ -1,10 +1,9 @@
 import ACTransitSwift
 import SwiftUI
 
-struct RoutesService_Route: View {
+struct RoutesService_Directions: View {
     @State private var routeName: String = ""
-    @State private var booking: String = ""
-    @State private var result: Route?
+    @State private var results: [String] = []
     @State private var isLoading = false
     @State private var errorMessage: String?
 
@@ -16,10 +15,6 @@ struct RoutesService_Route: View {
                 HStack {
                     TextField("routeName (e.g. 72)", text: $routeName)
                     FieldBadge(requirement: .required)
-                }
-                HStack {
-                    TextField("booking (e.g. Current)", text: $booking)
-                    FieldBadge(requirement: .optional)
                 }
             }
 
@@ -45,29 +40,23 @@ struct RoutesService_Route: View {
                 }
             }
 
-            if let result {
-                Section("Result") {
-                    VStack(alignment: .leading) {
-                        Text(result.name)
+            if !results.isEmpty {
+                Section("Results (\(results.count))") {
+                    ForEach(results, id: \.self) { direction in
+                        Text(direction)
                             .fontWeight(.medium)
-                        Text(result.description)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
                     }
                 }
             }
         }
-        .navigationTitle("RoutesService.route")
+        .navigationTitle("RoutesService.directions")
     }
 
     private func fetch() async {
         isLoading = true
         errorMessage = nil
         do {
-            result = try await client.routes.route(
-                routeName: routeName,
-                booking: booking.isEmpty ? nil : booking
-            )
+            results = try await client.routes.directions(routeName: routeName)
         } catch {
             errorMessage = error.localizedDescription
         }

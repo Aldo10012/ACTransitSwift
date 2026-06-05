@@ -1,10 +1,9 @@
 import ACTransitSwift
 import SwiftUI
 
-struct RoutesService_Routes: View {
-    @State private var booking: String = ""
-    @State private var sortType: RouteSortType?
-    @State private var results: [RouteDivision] = []
+struct RoutesService_Profile: View {
+    @State private var routes: String = ""
+    @State private var results: [RouteProfile] = []
     @State private var isLoading = false
     @State private var errorMessage: String?
 
@@ -14,22 +13,15 @@ struct RoutesService_Routes: View {
         Form {
             Section("Parameters") {
                 HStack {
-                    TextField("booking (e.g. Current)", text: $booking)
-                    FieldBadge(requirement: .optional)
-                }
-                HStack {
-                    Picker("sortType", selection: $sortType) {
-                        Text("none").tag(RouteSortType?.none)
-                        Text("Alphabetical").tag(RouteSortType?.some(.alphabetical))
-                        Text("Natural").tag(RouteSortType?.some(.natural))
-                    }
-                    FieldBadge(requirement: .optional)
+                    TextField("routes (e.g. 72)", text: $routes)
+                    FieldBadge(requirement: .required)
                 }
             }
 
             SearchButton(isLoading: isLoading) {
-                await fetchRoutes()
+                await fetch()
             }
+            .disabled(isLoading || routes.isEmpty)
 
             if isLoading {
                 Section {
@@ -50,11 +42,11 @@ struct RoutesService_Routes: View {
 
             if !results.isEmpty {
                 Section("Results (\(results.count))") {
-                    ForEach(results, id: \.routeId) { route in
+                    ForEach(results, id: \.routeId) { profile in
                         VStack(alignment: .leading) {
-                            Text(route.name)
+                            Text(profile.routeId)
                                 .fontWeight(.medium)
-                            Text(route.description)
+                            Text(profile.profile)
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -62,17 +54,14 @@ struct RoutesService_Routes: View {
                 }
             }
         }
-        .navigationTitle("RoutesService.routes")
+        .navigationTitle("RoutesService.profile")
     }
 
-    private func fetchRoutes() async {
+    private func fetch() async {
         isLoading = true
         errorMessage = nil
         do {
-            results = try await client.routes.routes(
-                booking: booking.isEmpty ? nil : booking,
-                sortType: sortType
-            )
+            results = try await client.routes.profile(routes: routes)
         } catch {
             errorMessage = error.localizedDescription
         }

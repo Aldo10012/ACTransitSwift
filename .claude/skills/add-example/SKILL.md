@@ -214,24 +214,53 @@ For a single-value return, wrap the result display in `if let result { ... }`.
 import MapKit
 
 // State
-@State private var region = MKCoordinateRegion(
-    center: CLLocationCoordinate2D(latitude: 37.8, longitude: -122.27),
-    span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+@State private var position: MapCameraPosition = .region(
+    MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 37.8, longitude: -122.27),
+        span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+    )
 )
 
 // In body, after error section:
 if !results.isEmpty {
     Section("Results (\(results.count))") {
-        Map(coordinateRegion: $region, annotationItems: {flattenedCoordinateItems}) { item in
-            MapMarker(coordinate: CLLocationCoordinate2D(
-                latitude: item.{latField},
-                longitude: item.{lonField}
-            ))
+        Map(position: $position) {
+            ForEach({flattenedCoordinateItems}, id: \.{uniqueProperty}) { item in
+                Marker("{label}", coordinate: CLLocationCoordinate2D(
+                    latitude: item.{latField},
+                    longitude: item.{lonField}
+                ))
+            }
         }
         .frame(height: 300)
         .listRowInsets(EdgeInsets())
+        ForEach({flattenedCoordinateItems}, id: \.{uniqueProperty}) { item in
+            VStack(alignment: .leading) {
+                Text(item.{primaryStringProp})
+                    .fontWeight(.medium)
+                Text(item.{secondaryStringProp})
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
     }
 }
+
+// After fetching, fit the camera to all results — use guard let, never force-unwrap min/max:
+guard let minLat = {items}.map(\.{latField}).min(),
+      let maxLat = {items}.map(\.{latField}).max(),
+      let minLon = {items}.map(\.{lonField}).min(),
+      let maxLon = {items}.map(\.{lonField}).max() else { return }
+position = .region(MKCoordinateRegion(
+    center: CLLocationCoordinate2D(
+        latitude: (minLat + maxLat) / 2,
+        longitude: (minLon + maxLon) / 2
+    ),
+    span: MKCoordinateSpan(
+        latitudeDelta: max(maxLat - minLat, 0.01) * 1.3,
+        longitudeDelta: max(maxLon - minLon, 0.01) * 1.3
+    )
+))
 ```
 
 Flatten nested arrays if needed to reach the coordinate-bearing type.
@@ -249,11 +278,14 @@ private func fetch() async {
     isLoading = true
     errorMessage = nil
     do {
+        // Int params: parse with guard let before the API call — never force-unwrap
+        guard let {paramName} = Int({paramName}String) else { return }
+
         results = try await client.{clientAccessor}.{methodName}(
             {label}: {conversion},
             // String → {paramName}.isEmpty ? nil : {paramName}   (optional)
             //       → {paramName}                                  (required)
-            // Int   → Int({paramName})                            (force-unwrap safe: button disabled when empty)
+            // Int   → parsed via guard let above (see note)
             // Bool  → {paramName}
             // Enum  → {paramName}
         )

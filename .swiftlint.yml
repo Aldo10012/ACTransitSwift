@@ -54,6 +54,7 @@ type_name:
   max_length:
     warning: 70
     error: 70
+  allowed_symbols: ['_']
 
 trailing_comma:
   mandatory_comma: false

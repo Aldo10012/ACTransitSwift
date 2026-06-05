@@ -1,10 +1,10 @@
 import ACTransitSwift
 import SwiftUI
 
-struct RoutesService_Routes: View {
+struct RoutesService_Exceptions: View {
+    @State private var routes: String = ""
     @State private var booking: String = ""
-    @State private var sortType: RouteSortType?
-    @State private var results: [RouteDivision] = []
+    @State private var result: RouteExceptions?
     @State private var isLoading = false
     @State private var errorMessage: String?
 
@@ -14,22 +14,19 @@ struct RoutesService_Routes: View {
         Form {
             Section("Parameters") {
                 HStack {
-                    TextField("booking (e.g. Current)", text: $booking)
-                    FieldBadge(requirement: .optional)
+                    TextField("routes (e.g. 72)", text: $routes)
+                    FieldBadge(requirement: .required)
                 }
                 HStack {
-                    Picker("sortType", selection: $sortType) {
-                        Text("none").tag(RouteSortType?.none)
-                        Text("Alphabetical").tag(RouteSortType?.some(.alphabetical))
-                        Text("Natural").tag(RouteSortType?.some(.natural))
-                    }
+                    TextField("booking (e.g. Current)", text: $booking)
                     FieldBadge(requirement: .optional)
                 }
             }
 
             SearchButton(isLoading: isLoading) {
-                await fetchRoutes()
+                await fetch()
             }
+            .disabled(isLoading || routes.isEmpty)
 
             if isLoading {
                 Section {
@@ -48,13 +45,13 @@ struct RoutesService_Routes: View {
                 }
             }
 
-            if !results.isEmpty {
-                Section("Results (\(results.count))") {
-                    ForEach(results, id: \.routeId) { route in
+            if let result {
+                Section("Results (\(result.dateExceptions.count) exceptions)") {
+                    ForEach(result.dateExceptions, id: \.routeId) { exception in
                         VStack(alignment: .leading) {
-                            Text(route.name)
+                            Text(exception.routeId)
                                 .fontWeight(.medium)
-                            Text(route.description)
+                            Text("\(exception.serviceExceptions.count) service exception(s)")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -62,16 +59,16 @@ struct RoutesService_Routes: View {
                 }
             }
         }
-        .navigationTitle("RoutesService.routes")
+        .navigationTitle("RoutesService.exceptions")
     }
 
-    private func fetchRoutes() async {
+    private func fetch() async {
         isLoading = true
         errorMessage = nil
         do {
-            results = try await client.routes.routes(
-                booking: booking.isEmpty ? nil : booking,
-                sortType: sortType
+            result = try await client.routes.exceptions(
+                routes: routes,
+                booking: booking.isEmpty ? nil : booking
             )
         } catch {
             errorMessage = error.localizedDescription

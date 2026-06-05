@@ -1,10 +1,11 @@
 import ACTransitSwift
 import SwiftUI
 
-struct RoutesService_Routes: View {
-    @State private var booking: String = ""
-    @State private var sortType: RouteSortType?
-    @State private var results: [RouteDivision] = []
+struct RoutesService_Trips: View {
+    @State private var routeName: String = ""
+    @State private var direction: String = ""
+    @State private var scheduleType: TripScheduleType?
+    @State private var results: [Trip] = []
     @State private var isLoading = false
     @State private var errorMessage: String?
 
@@ -14,22 +15,28 @@ struct RoutesService_Routes: View {
         Form {
             Section("Parameters") {
                 HStack {
-                    TextField("booking (e.g. Current)", text: $booking)
+                    TextField("routeName (e.g. 72)", text: $routeName)
+                    FieldBadge(requirement: .required)
+                }
+                HStack {
+                    TextField("direction (e.g. Southbound)", text: $direction)
                     FieldBadge(requirement: .optional)
                 }
                 HStack {
-                    Picker("sortType", selection: $sortType) {
-                        Text("none").tag(RouteSortType?.none)
-                        Text("Alphabetical").tag(RouteSortType?.some(.alphabetical))
-                        Text("Natural").tag(RouteSortType?.some(.natural))
+                    Picker("scheduleType", selection: $scheduleType) {
+                        Text("none").tag(TripScheduleType?.none)
+                        Text("Weekday").tag(TripScheduleType?.some(.weekday))
+                        Text("Saturday").tag(TripScheduleType?.some(.saturday))
+                        Text("Sunday").tag(TripScheduleType?.some(.sunday))
                     }
                     FieldBadge(requirement: .optional)
                 }
             }
 
             SearchButton(isLoading: isLoading) {
-                await fetchRoutes()
+                await fetch()
             }
+            .disabled(isLoading || routeName.isEmpty)
 
             if isLoading {
                 Section {
@@ -50,11 +57,14 @@ struct RoutesService_Routes: View {
 
             if !results.isEmpty {
                 Section("Results (\(results.count))") {
-                    ForEach(results, id: \.routeId) { route in
+                    ForEach(results, id: \.tripId) { trip in
                         VStack(alignment: .leading) {
-                            Text(route.name)
+                            Text(trip.direction)
                                 .fontWeight(.medium)
-                            Text(route.description)
+                            Text(trip.routeName)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            Text(trip.startTime)
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
@@ -62,16 +72,17 @@ struct RoutesService_Routes: View {
                 }
             }
         }
-        .navigationTitle("RoutesService.routes")
+        .navigationTitle("RoutesService.trips")
     }
 
-    private func fetchRoutes() async {
+    private func fetch() async {
         isLoading = true
         errorMessage = nil
         do {
-            results = try await client.routes.routes(
-                booking: booking.isEmpty ? nil : booking,
-                sortType: sortType
+            results = try await client.routes.trips(
+                routeName: routeName,
+                direction: direction.isEmpty ? nil : direction,
+                scheduleType: scheduleType
             )
         } catch {
             errorMessage = error.localizedDescription
