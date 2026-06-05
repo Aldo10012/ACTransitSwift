@@ -21,6 +21,7 @@ struct ContentView: View {
                     cell(title: "waypointsFast") { RoutesService_WaypointsFast() }
                     cell(title: "tripsToday") { RoutesService_TripsToday() }
                     cell(title: "tripStopsToday") { RoutesService_TripStopsToday() }
+                    cell(title: "timetable") { RoutesService_Timetable() }
                 } header: {
                     Text("RoutesService")
                 }
