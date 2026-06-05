@@ -24,6 +24,7 @@ struct ContentView: View {
                     cell(title: "timetable") { RoutesService_Timetable() }
                     cell(title: "schedule") { RoutesService_Schedule() }
                     cell(title: "destinations") { RoutesService_Destinations() }
+                    cell(title: "exceptions") { RoutesService_Exceptions() }
                 } header: {
                     Text("RoutesService")
                 }
