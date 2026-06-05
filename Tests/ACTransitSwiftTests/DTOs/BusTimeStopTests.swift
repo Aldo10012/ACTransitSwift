@@ -14,5 +14,4 @@ final class BusTimeStopTests {
         #expect(result.dtradd == BusTimeStop.sample.dtradd)
         #expect(result.dtrrem == BusTimeStop.sample.dtrrem)
     }
-
 }

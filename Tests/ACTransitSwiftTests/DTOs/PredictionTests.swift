@@ -17,5 +17,4 @@ final class PredictionTests {
         #expect(result.dly == Prediction.sample.dly)
         #expect(result.seq == Prediction.sample.seq)
     }
-
 }

@@ -13,5 +13,4 @@ final class BusTimeRouteTests {
         #expect(result.rtdd == BusTimeRoute.sample.rtdd)
         #expect(result.rtpidatafeed == BusTimeRoute.sample.rtpidatafeed)
     }
-
 }

@@ -20,5 +20,4 @@ final class BusTimeVehicleTests {
         #expect(result.rtpidatafeed == BusTimeVehicle.sample.rtpidatafeed)
         #expect(result.tmres == BusTimeVehicle.sample.tmres)
     }
-
 }

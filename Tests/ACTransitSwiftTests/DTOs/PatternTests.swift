@@ -13,5 +13,4 @@ final class PatternTests {
         #expect(result.dtrid == Pattern.sample.dtrid)
         #expect(result.dtrpt == nil)
     }
-
 }

@@ -10,5 +10,4 @@ final class ActRealtimeDirectionTests {
         #expect(result.id == "TO RICHMOND")
         #expect(result.name == ActRealtimeDirection.sample.name)
     }
-
 }

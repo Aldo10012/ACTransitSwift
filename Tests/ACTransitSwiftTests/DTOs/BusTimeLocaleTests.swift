@@ -10,5 +10,4 @@ final class BusTimeLocaleTests {
         #expect(result.localeString == "es")
         #expect(result.displayName == BusTimeLocale.sample.displayName)
     }
-
 }
