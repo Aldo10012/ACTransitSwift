@@ -84,26 +84,25 @@ struct RoutesService_Pattern: View {
         isLoading = true
         errorMessage = nil
         do {
+            guard let parsedTripId = Int(tripId) else { return }
             results = try await client.routes.pattern(
                 routeName: routeName,
-                tripId: Int(tripId)!
+                tripId: parsedTripId
             )
-            if !results.isEmpty {
-                let minLat = results.map(\.latitude).min()!
-                let maxLat = results.map(\.latitude).max()!
-                let minLon = results.map(\.longitude).min()!
-                let maxLon = results.map(\.longitude).max()!
-                position = .region(MKCoordinateRegion(
-                    center: CLLocationCoordinate2D(
-                        latitude: (minLat + maxLat) / 2,
-                        longitude: (minLon + maxLon) / 2
-                    ),
-                    span: MKCoordinateSpan(
-                        latitudeDelta: max(maxLat - minLat, 0.01) * 1.3,
-                        longitudeDelta: max(maxLon - minLon, 0.01) * 1.3
-                    )
-                ))
-            }
+            guard let minLat = results.map(\.latitude).min(),
+                  let maxLat = results.map(\.latitude).max(),
+                  let minLon = results.map(\.longitude).min(),
+                  let maxLon = results.map(\.longitude).max() else { return }
+            position = .region(MKCoordinateRegion(
+                center: CLLocationCoordinate2D(
+                    latitude: (minLat + maxLat) / 2,
+                    longitude: (minLon + maxLon) / 2
+                ),
+                span: MKCoordinateSpan(
+                    latitudeDelta: max(maxLat - minLat, 0.01) * 1.3,
+                    longitudeDelta: max(maxLon - minLon, 0.01) * 1.3
+                )
+            ))
         } catch {
             errorMessage = error.localizedDescription
         }
