@@ -20,6 +20,7 @@ struct ContentView: View {
                     cell(title: "waypoints") { RoutesService_Waypoints() }
                     cell(title: "waypointsFast") { RoutesService_WaypointsFast() }
                     cell(title: "tripsToday") { RoutesService_TripsToday() }
+                    cell(title: "tripStopsToday") { RoutesService_TripStopsToday() }
                 } header: {
                     Text("RoutesService")
                 }
